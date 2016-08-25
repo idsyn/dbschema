@@ -21,21 +21,7 @@ $arr_special_charset = array_keys($config['special_charset']);
 init_db($config['db']['dbname'], $config['init_sql']);
 
 # 0全部重新抓取, 1(市)忽略省, 2(县)忽略省市, 3(乡)忽略省市县, 4(村)仅抓取村的数据
-run(4);
-
-# $result = get_xiang('http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2015/44/4420.html', array('pid' => 44, 'cid' => 4420, 'id' => 0, 'name' => '中山市'));
-# $sql = '';
-# foreach ($result as $xiang) {
-# 	$name_xiang_temp = '';
-# 	if (in_array($xiang['id'], $arr_special_charset)) {
-# 		$name_xiang_temp = $config['special_charset'][$xiang['id']];
-# 	} else {
-# 		$name_xiang_temp = mb_convert_encoding($xiang['name'], 'utf-8', 'gb2312');
-# 	}
-# 	$sql .= "insert into `{$config['db']['dbname']}`.`xiang` (`id`, `name`, `pid`, `cid`, `xid`) values ('{$xiang['id']}','{$name_xiang_temp}','{$xiang['pid']}','{$xiang['cid']}','{$xiang['xid']}');";
-# }
-# insert_db($sql);
-# exit;
+run(0);
 
 # end
 
