@@ -1,2 +1,11 @@
-# dbschema
-db schema by php5 , db: mysql
+# db
+# 查询数据库表结构
+# php5 mysql
+
+
+# pacong
+# 抓取省市县乡村数据，自动创建所需表
+# php5 mysql
+
+
+# 本项目提供的所有功能，仅供技术研究学习时使用
