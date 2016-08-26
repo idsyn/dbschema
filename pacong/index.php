@@ -131,7 +131,7 @@ function run($type) {
 			$url_xiang1 = $config['url']['host'].str_replace('{$city}', $special_city['id'], str_replace('{$province}', $special_city['pid'], $config['url']['xian']));
 			$xian = array('id' => 0, 'name' => $special_city['name'], 'pid' => $special_city['pid'], 'cid' => $special_city['id']);
 			$data['xiang'] = array_merge($data['xiang'], get_xiang($url_xiang1, $xian));
-		} # 乡  少了中山市的数据了  4420
+		}
 
 		$sql = '';
 		foreach ($data['xiang'] as $xiang) {
@@ -157,23 +157,28 @@ function run($type) {
 
 	# 村/社区 cun
 	if ($type < 5) {
+		$count = 0;
 		foreach ($data['xiang'] as $xiang) {
 			if (in_array($xiang['name'], $config['special_xiang'])) {
 				continue;
 			}
 
 			$url_cun = $config['url']['host'].str_replace('{$xiang}', $xiang['id'], str_replace('{$xian}', str_replace($xiang['cid'], '', $xiang['xid']), str_replace('{$city}', str_replace($xiang['pid'], '', $xiang['cid']), str_replace('{$province}', $xiang['pid'], $config['url']['cun']))));
-			$data['cun'] = array_merge($data['cun'], get_cun($url_cun, $xiang));
+			# 数据量太多，占用内存过大
+#			$data['cun'] = array_merge($data['cun'], get_cun($url_cun, $xiang));
+
+			$result = get_cun($url_cun, $xiang);
+
+			$sql = '';
+			foreach ($result as $cun) {
+				$name_cun_temp = mb_convert_encoding($cun['name'], 'utf-8', 'gb2312');
+				$sql .= "insert into `{$config['db']['dbname']}`.`cun` (`id`, `name`, `pid`, `cid`, `xid`, `xgid`, `type`) values ({$cun['id']},'{$name_cun_temp}',{$cun['pid']},{$cun['cid']},{$cun['xid']},{$cun['xgid']},{$cun['type']});";
+			}
+			insert_db($sql);
+			$count++;
 		}
 
-		$sql = '';
-		foreach ($data['cun'] as $cun) {
-			$name_cun_temp = mb_convert_encoding($cun['name'], 'utf-8', 'gb2312');
-			$sql .= "insert into `{$config['db']['dbname']}`.`cun` (`id`, `name`, `pid`, `cid`, `xid`) values ('{$cun['id']}','{$name_cun_temp}','{$cun['pid']}','{$cun['cid']}','{$cun['xid']}');";
-		}
-		insert_db($sql);
-
-		echo "cun success:".count($data['cun'])."\n";
+		echo "cun success:".$count."\n";
 	}
 }
 
@@ -201,11 +206,7 @@ function get_province($url) {
 	
 	preg_match_all($config['reg_province']['step1'], $html_province, $match_province1);
 	if (count($match_province1[0]) == 0) {
-		echo ".........error2...........\n";
-		if ($config['error_sleep_time']) {
-			sleep($config['error_sleep_time']);
-		}
-		return get_province($url);
+		return $result;
 	}
 
 	$str_province1 = $match_province1[0][0];
@@ -264,7 +265,7 @@ function get_city($url, $province) {
 	$str_city1 = $match_city1[0][0];
 	preg_match_all($config['reg_city']['step2'], $str_city1, $match_city2);
 	if (count($match_city2[0]) == 0) {
-		die('city match2 error');
+		return $result;
 	}
 
 	foreach ($match_city2[0] as $str_city_temp) {
@@ -314,11 +315,7 @@ function get_xian($url, $city) {
 
 	preg_match_all($config['reg_xian']['step1'], $html_xian, $match_xian1);
 	if (count($match_xian1[0]) == 0) {
-		echo ".........error2...........\n";
-		if ($config['error_sleep_time']) {
-			sleep($config['error_sleep_time']);
-		}
-		return get_xian($url, $city);
+		return $result;
 	}
 
 	$str_xian1 = $match_xian1[0][0];
@@ -380,11 +377,7 @@ function get_xiang($url, $xian) {
 
 	preg_match_all($config['reg_xiang']['step1'], $html_xiang, $match_xiang1);
 	if (count($match_xiang1[0]) == 0) {
-		echo ".........error2...........\n";
-		if ($config['error_sleep_time']) {
-			sleep($config['error_sleep_time']);
-		}
-		return get_xiang($url, $xian);
+		return $result;
 	}
 
 	$str_xiang1 = $match_xiang1[0][0];
@@ -438,11 +431,7 @@ function get_cun($url, $xiang) {
 
 	preg_match_all($config['reg_cun']['step1'], $html_cun, $match_cun1);
 	if (count($match_cun1[0]) == 0) {
-		echo ".........error2...........\n";
-		if ($config['error_sleep_time']) {
-			sleep($config['error_sleep_time']);
-		}
-		return get_cun($url, $xiang);
+		return $result;
 	}
 
 	$str_cun1 = $match_cun1[0][0];

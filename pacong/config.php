@@ -50,14 +50,14 @@ $config = array(
 		'city'     => "CREATE TABLE `city` (`id` int(11) NOT NULL,`name` varchar(45) DEFAULT NULL,`pid` int(11) DEFAULT NULL,`type` int(11) DEFAULT NULL COMMENT '0下级是县,1下级是乡镇',PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
 		'xian'     => 'CREATE TABLE `xian` (`id` int(11) NOT NULL,`name` varchar(45) DEFAULT NULL,`pid` int(11) DEFAULT NULL,`cid` int(11) DEFAULT NULL,PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;',
 		'xiang'    => 'CREATE TABLE `xiang` (`id` int(11) NOT NULL,`name` varchar(45) DEFAULT NULL,`pid` int(11) DEFAULT NULL,`cid` int(11) DEFAULT NULL,`xid` int(11) DEFAULT NULL,PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;',
-		'cun'      => 'CREATE TABLE `cun` (`id` int(11) NOT NULL,`name` varchar(45) DEFAULT NULL,`pid` int(11) DEFAULT NULL,`cid` int(11) DEFAULT NULL,`xid` int(11) DEFAULT NULL,`xgid` int(11) DEFAULT NULL,`type` int(11) DEFAULT NULL,PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;'
+		'cun'      => 'CREATE TABLE `cun` (`id` bigint NOT NULL,`name` varchar(45) DEFAULT NULL,`pid` int(11) DEFAULT NULL,`cid` int(11) DEFAULT NULL,`xid` int(11) DEFAULT NULL,`xgid` int(11) DEFAULT NULL,`type` int(11) DEFAULT NULL,PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;'
 	),
 	'sleep_time'       => 0,
 	'error_sleep_time' => 3,
-	# 4419东莞市，4420中山市 下级直接是乡镇，没有县
+	# 市 下级直接是乡镇，没有县
 	'special_city' => array(
-		0 => 4419,
-		1 => 4420
+		0 => 4419, // 广东省 东莞市
+		1 => 4420  // 广东省 中山市
 	),
 	# 县 没有下级
 	'special_xian' => array(
@@ -69,21 +69,62 @@ $config = array(
 	),
 	# 乡 没有下级
 	'special_xiang' => array(
-		0 => '大胡同街道', // 天津市 市辖区 津南区
-		1 => '双港新家园街道', // 天津市 市辖区 津南区
-		2 => '青源街道', // 天津市 市辖区 红桥区
-		3 => '陡电街道办事处', // 河北省 唐山市 开平区
-		4 => '荆各庄街道办事处', // 河北省 唐山市 开平区
+		0  => '大胡同街道',
+		1  => '双港新家园街道', // 天津市 市辖区 津南区
+		2  => '青源街道', // 天津市 市辖区 红桥区
+		3  => '陡电街道办事处', // 河北省 唐山市 开平区
+		4  => '荆各庄街道办事处', // 河北省 唐山市 开平区
+		5  => '巴彦锡勒办事处乡', // 
+		6  => '新建街道', // 
+		7  => '龙翔街道', // 
+		8  => '龙飞街道', // 
+		9  => '吉林东市商贸示范区（特殊街道）', // 
+		10 => '水泥路街道办事处', // 
+		11 => '和平街道办事处', // 
+		12 => '七星镇', // 
+		13 => '立志街道办事处', // 
+		14 => '冯封街道办事处', // 
+		15 => '龙洞街道办事处', // 
+		16 => '月山街道办事处', // 
+		17 => '丹河街道办事处', // 
+		18 => '涨渡湖街道办事处', // 
+		19 => '地质新村街街道办事处', // 
+		20 => '黄羊河街道办事处', // 
+		21 => '火车南站街道办事处', // 
+		22 => '五五新镇街道办事处', // 
+		23 => '双井子乡', // 
+		24 => '阿拉套街道', // 
+		25 => '艾比湖镇', // 
+		26 => '塔中镇', // 
+		27 => '沙雅县哈德墩镇', // 
+		28 => '三岔口镇', // 
+		29 => '达里雅布依乡', // 
+		30 => '白杨沟镇', // 
+		31 => '查和特乡', // 
+		32 => '永安坝街道办事处', // 
+		33 => '海防办事处乡', // 
+		34 => '瓦曲乃乌乡',  // 
+		35 => '方兴社区', // 
+		36 => '慈湖街道', // 
+		37 => '慈湖乡', // 
+		38 => '银塘镇', // 
+		39 => '西园街道办事处', // 
+		40 => '金家林街道', // 
+		41 => '五当沟街道办事处', // 
+		42 => '水上街道办事处', // 
+		43 => '雁山街道办事处', // 
+		44 => '来华街道办事处', // 
+		45 => '江北城街道办事处' // 
 	),
 	# php utf-8不支持的地名
 	'special_charset'  => array(
-		# xian
+		# 县 xian
 		'410304'    => '瀍河回族区', // 河南省 洛阳市
 		'420505'    => '猇亭区',
 		'341302'    => '埇桥区', // 安徽省 宿州市
 		'411502'    => '浉河区', // 河南省 信阳市
 		'420104'    => '硚口区',
-		# xiang
+		# 乡 xiang
 		'110112106' => '漷县镇', // 北京市 市辖区 通州区
 		'120117205' => '俵口乡', // 天津市 市辖区 宁河区
 		'130207110' => '柳树酄镇', // 河北省 唐山市 丰南区
