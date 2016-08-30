@@ -105,7 +105,7 @@ function run($type) {
 
 		echo "xian success:".count($data['xian'])."\n";
 	} else if ($type == 3) {
-		$sql_xian = "select * from `{$config['db']['dbname']}`.`xian` where `name` not in ('".implode("','", $config['special_xian'])."');";
+		$sql_xian = "select * from `{$config['db']['dbname']}`.`xian` where `name` not in ('".implode("','", $config['special_xian'])."') union select * from `{$config['db']['dbname']}`.`xian` where `id` in (".implode("','", $config['special_xian1']).");";
 		$data['xian'] = select_db($sql_xian);
 		if (count($data['xian']) == 0) {
 			die('no xian data');
@@ -187,6 +187,8 @@ function run($type) {
 }
 
 function insert_cun($arr_cun) {
+	global $config;
+
 	$sql = '';
 	foreach ($arr_cun as $cun) {
 		$name_cun_temp = mb_convert_encoding($cun['name'], 'utf-8', 'gb2312');

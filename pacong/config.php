@@ -68,6 +68,10 @@ $config = array(
 		3 => '中沙群岛的岛礁及其海域', // 海南省 三沙市
 		4 => '金门县' // 福建省 泉州市 金门县
 	),
+	# 市辖区 有下级
+	'special_xian1' => array(
+		0 => 620201 // 甘肃省 嘉峪关市
+		),
 	# php utf-8不支持的地名
 	'special_charset'  => array(
 		# 县 xian
